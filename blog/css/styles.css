@@ -11,26 +11,120 @@
 /* Page Header */
 body>header {
     text-align: center;
-    background-color: #EEF;
+    background-color: #E4E4FF;
+}
+
+body>header:hover {
+    background-color: #FFE8BA;
+}
+
+/* Page Header Clickable area */
+body>header>a {
+    display:inline-block;
+    width: 100%;
+    height: 100%;
     padding: 5px;
 }
 
+/* Main Body area */
 main {
-    padding-top:10px;
-    box-shadow: 0 -2px 5px #DDD;
+    padding-top: 10px;
+    box-shadow: 0 -3px 5px rgba(0,0,0,0.15);
+    border-style: solid;
+    /*border-color: #DDD;*/
+    border-color: #E60;
+    border-width: 1px;
 }
 
-h1>a:link {
+main>.nav {
+    margin: 0 0 15px 0;
+}
+main>.nav>a {
+    padding: 10px 20px;
+    margin: 0 5px;
+}
+
+.nav-tabs {
+    /*background-color: #888;*/
+    background-color: #E60;
+    padding-top: 2px;
+    padding-left: 4px;
+    box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-style: solid;
+    border-color: #CCC;
+    border-width: 1px 0 0 0;
+}
+
+.nav-tabs>li {
+    border-top-left-radius: 15px;
+    border-top-right-radius: 15px;
+}
+
+/*Non-active links are white*/
+.nav-tabs>li:not(.active)>a:link,
+.nav-tabs>li:not(.active)>a:visited {
+    color:white;
+}
+
+/*Non-active links are white*/
+.nav-tabs>li:not(.active)>a:hover,
+ .nav-tabs>li:not(.active)>a:hover {
+    color:#555;
+}
+
+/*Navigation tabs, not selected, not hovering*/
+/*.nav-tabs>li>a:not(:hover){
+    border-style: solid;
+    border-width: 1px 1px 0 1px;
+    border-color: #AAA;
+}*/
+
+.nav-tabs>li>a:hover{
+    /*background-color: #DDD;*/
+    background-color: #F93;
+    border-style: solid;
+    border-width: 1px 1px 0 1px;
+    margin-bottom: -1px;
+    border-color: #FB4;
+    color:white;
+}
+
+.btn-orange {
+    color: #FFF;
+    background-color: #E60; 
+    border-color: #D40;
+}
+
+/*.well {
+    background-color: transparent;
+    border-width: 0 0;
+    box-shadow: 0 2px 1px rgba(0,0,0,0.2), 0 -2px 1px rgba(0,0,0,0.2);
+}*/
+
+body>header>a:link {
+    color:black;
+    text-decoration: none;
+}
+
+body>header>a:visited {
     color:black;
 }
 
-h1>a:visited {
-    color:black;
+body>header>a:hover {
+    /*color:#428BCA;*/
+    color:#FF7F00;
 }
 
 /* Page Info */
 small>p {
     color:#666;
+    margin: 0;
+}
+
+article>header>a>h2 {
+    margin-top: 5px;
 }
 
 @media (max-width: 768px) { 
@@ -38,6 +132,11 @@ small>p {
         font-size: 14px;
         line-height: 190%;
     }
+}
+
+.footer {
+    margin-top: 50px;
+    color: #999;    
 }
 
 .nomargins {

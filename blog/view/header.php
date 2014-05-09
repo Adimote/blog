@@ -9,7 +9,7 @@
 		}
 		return $title;
 	}
-	if ($_GET['admin']) {
+	if (isset($_GET['admin'])) {
 		$GLOBALS['admin'] = true;
 	}
 ?>
@@ -22,6 +22,14 @@
 ?></title>
 
 <header>
-	<h1><a href="/"><?php echo Conf::Title; ?></a></h1>
-	<small><p>Subtitle goes here</p></small>
+	<a href="/">
+	<div>
+		<h1><?php echo Conf::Title; ?></h1>
+		<small><p><?php echo Conf::SubTitle; ?></p></small>
+	</div>
+	</a>
 </header>
+<ul class="nav nav-tabs container">
+	<li class="active"><a href="#">Blog</a></li>
+	<li><a href="#">About Me</a></li>
+</ul>

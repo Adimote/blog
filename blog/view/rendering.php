@@ -1,4 +1,5 @@
 <?php
+
 //Renders an array of posts into HTML and returns it
 function renderPostList($posts) {
 	$result = "";
@@ -43,10 +44,10 @@ function renderPost($post,$is_preview) {
 	if ($is_preview) {
 		$content = htmlspecialchars($post['flavour']);
 	} else {
-		$content = htmlspecialchars($post['content']);
+		$content = $post['content'];
 	}
 
-	if ($GLOBALS['admin']) {
+	if (isset($GLOBALS['admin'])) {
 		$id = htmlspecialchars($post['id']);
 		$admin = <<<"HTML"
 <a class="btn btn-primary" href="/secure/post-edit.php?id={$id}

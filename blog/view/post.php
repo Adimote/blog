@@ -14,21 +14,22 @@
 	$GLOBALS['pageTitle'] = htmlspecialchars($post['title']);
 	include_once 'header.php';
 ?>
-<main>
-	<div class="container">
-		<?php
-		if ($post instanceof sqlError) {
-			$mess = new Message("error",$post->message);
-			echo $mess->formatMessage();
-		}
-		?>
+<main class="container">
+	<?php
+	if ($post instanceof sqlError) {
+		$mess = new Message("error",$post->message);
+		echo $mess->formatMessage();
+	}
+	?>
+	<div class="row">
 		<div class="col-md-9">
 			<?php
 				echo renderPost($post);
 			?>
 		</div>
 		<div class="col-md-3">
-			<div class="well"><h4>Tags:</h4>
+			<div class="well">
+			<h4>Tags:</h4>
 				<div class="text-center tagcontainer">
 				<?php
 				$tags = $sqlget->getTagsByPost($post['id']);
