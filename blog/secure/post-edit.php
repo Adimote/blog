@@ -17,7 +17,6 @@
 
 		//Parse a $_POST of the add-a-post form
 		public function parsePost($post){
-			//TODO: find a way of naming variables, to future-proof this function call:
 			if (post\checkForm($this,$post)) {
 				// If it's an Edit, then editid will be sent
 				$postID = $post['editid'];

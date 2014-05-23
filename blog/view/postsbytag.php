@@ -1,74 +1,112 @@
 <?php 
-	include_once '../../includes/sql-manager.php';
-	include_once '../common.php';
-	include_once 'rendering.php';
-	include_once 'pagination.php';
+include_once '../../includes/sql-manager.php';
+include_once '../common.php';
+include_once 'rendering.php';
+include_once 'pagination.php';
 
-	$sqlget = new sqlGetter();
-	$posts = $sqlget->getPostsByTag($_GET['tag'],0,9999999);
-	$tag = $sqlget->getTagInfo($_GET['tag']);
+$sqlget = new sqlGetter();
+$tagobj = $sqlget->getTagInfo($_GET['tag']);
 
-	if ($posts instanceof sqlError) {
-		$mess = new Message("error",$posts->message);
-	}elseif (count($posts) == 0) {
-		$mess = new Message("error","No Posts Found");
-	}
-
+if (isset($_GET['page'])) {
 	$page = $_GET['page'];
+} else {
+	$page = "";
+}
 
-	$total = $sqlget->countPostsByTag($_GET['tag']);	
-	$paginator = new Paginator(Conf::Home_PerPage,$total);
-	$paginator->setPage($page);
-	$tags = $sqlget->getPostsByTag($_GET['tag'],$paginator->startIndex,$paginator->perPage);
+if (isset($_GET['tag'])) {
+	$tag = $_GET['tag'];
+} else {
+	$tag = "";
+}
 
-	$totalpages = $paginator->totalPages;
+$total = $sqlget->countPostsByTag($tag);
+$paginator = new Paginator(Conf::Home_PerPage,$total);
+$paginator->setPage($page);
+$page = $paginator->page;
+$posts = $sqlget->getPostsByTag($tag,$paginator->startIndex,$paginator->perPage);
 
-	//get the previous and next page numbers
-	$prev = $paginator->prev;
-	$page = $paginator->page;//setting $page to prevent negative page numbers
-	$next = $paginator->next;
+if ($posts instanceof sqlError) {
+	$mess = new Message("error",$posts->message);
+	//500, internal server error
+	http_response_code(500);
+} elseif (count($posts) == 0) {
+	$mess = new Message("error","No Posts Found");
+	//404, not found
+	http_response_code(404);
+}
 
-	//Make all the disableds either "disabled" or ""
-	$firstDisabled = $paginator->firstDisabled?"disabled":"";
-	$prevDisabled = $paginator->prevDisabled?"disabled":"";
-	$nextDisabled = $paginator->nextDisabled?"disabled":"";
-	$lastDisabled = $paginator->lastDisabled?"disabled":"";
+$totalpages = $paginator->totalPages;
 
-	$tagurl = htmlspecialchars($_GET['tag'],ENT_QUOTES);
+//get the previous and next page numbers
+$prev = $paginator->prev;
+$page = $paginator->page;//setting $page to prevent negative page numbers
+$next = $paginator->next;
 
-	if ($tag instanceof sqlError) {
-		$mess = new Message("error",$tag->message);
-		$GLOBALS['pageTitle'] = "Error";
+//Make all the disableds either "disabled" or ""
+$firstDisabled = $paginator->firstDisabled?"disabled":"";
+$prevDisabled = $paginator->prevDisabled?"disabled":"";
+$nextDisabled = $paginator->nextDisabled?"disabled":"";
+$lastDisabled = $paginator->lastDisabled?"disabled":"";
+
+$tagurl = htmlspecialchars($tag,ENT_QUOTES);
+
+if ($tagobj instanceof sqlError) {
+	$mess = new Message("error",$tagobj->message);
+	$GLOBALS['pageTitle'] = "Error";
+} else {
+	$tagname = htmlspecialchars($tagobj['tag']);
+	//display the header
+	$GLOBALS['pageTitle'] = "Posts Tagged ".$tagname;
+}
+
+if ($page == 1) {
+	$GLOBALS['canonical'] = "/tag/$tagname/";
+} else {
+	$GLOBALS['canonical'] = "/tag/$tagname/$page/";
+}
+
+include_once 'header.php';
+
+if (!$prevDisabled) {
+	if ($prev == 1) {
+		echo "<link rel=\"prev\" href=\"/tag/$tagname/\" />";
 	} else {
-		$tagname = htmlspecialchars($tag['tag']);
-		//display the header
-		$GLOBALS['pageTitle'] = "Posts Tagged ".$tagname;
+		echo "<link rel=\"prev\" href=\"/tag/$tagname/$prev/\" />";
 	}
+}
+if (!$nextDisabled) {
+	echo "<link rel=\"next\" href=\"/tag/$tagname/$next/\" />";
+}
 
-	include_once 'header.php';
+//Set the global variable for page number
+echo "<script>PAGENUM = $page;  TAG=\"$tag\"; MODE=\"postsByTag\";</script>";
+
+include_once 'header-body.php';
 ?>
-<main class="container">
-	<?php if ($tagname):?>
-		<h2>Viewing posts Tagged '<?php echo $tagname ?>'</h2>
-	<?php endif; ?>
-	<?php
-	//if there's an error
-	if (isset($mess)) {
-		echo $mess->formatMessage();
-	} else {
-		echo renderPostList($posts);
-	}
-	?>
-	<?php
-	//Navigation bar
-	echo <<<"HTML"
-<div class="nav">
-<a href="?tag={$tagurl}&page=1" {$firstDisabled} class="btn btn-orange pull-left"><span class="glyphicon glyphicon-step-backward"></span></a>
-<a href="?tag={$tagurl}&page={$prev}" {$prevDisabled} class="btn btn-orange pull-left"><span class="glyphicon glyphicon-chevron-left"></span></a>
-<a href="?tag={$tagurl}&page={$totalpages}" {$lastDisabled} class="btn btn-orange pull-right"><span class="glyphicon glyphicon-step-forward"></span></a>
-<a href="?tag={$tagurl}&page={$next}" {$nextDisabled} class="btn btn-orange pull-right"><span class="glyphicon glyphicon-chevron-right"></span></a>
+<?php if ($tagname):?>
+	<h2>Viewing posts Tagged '<?php echo $tagname ?>'</h2>
+<?php endif; ?>
+<?php
+//if there's an error
+if (isset($mess)) {
+	echo $mess->formatMessage();
+} else {
+	echo renderPostList($posts);
+}
+?>
+<?php
+//Navigation bar
+echo <<<"HTML"
+<div id="pagenav" class="nav">
+<a href="/tag/{$tagurl}/" {$firstDisabled} class="btn btn-orange pull-left"><span class="glyphicon glyphicon-step-backward"></span></a>
+<a href="/tag/{$tagurl}/{$prev}/" {$prevDisabled} class="btn btn-orange pull-left"><span class="glyphicon glyphicon-chevron-left"></span></a>
+<a href="/tag/{$tagurl}/{$totalpages}/" {$lastDisabled} class="btn btn-orange pull-right"><span class="glyphicon glyphicon-step-forward"></span></a>
+<a href="/tag/{$tagurl}/{$next}/" {$nextDisabled} class="btn btn-orange pull-right"><span class="glyphicon glyphicon-chevron-right"></span></a>
 <p class="text-center">Page {$page} / {$totalpages}</p>
 </div>
+<a id="toggleInfinite" class="full-btn">
+	Click here to enable infinite scroll
+</a>
 HTML;
 	?>
 </main>

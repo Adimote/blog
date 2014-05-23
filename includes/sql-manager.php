@@ -33,7 +33,7 @@
 				//Get the ID of the tag if it isn't already inputted
 				$tagID = $this->getTagByName($tag);
 				//if none of them matched, return -1
-				if (($tagID instanceof sqlError) && ($tagID->message == "No matching Tags")){
+				if ($tagID == false){
 					//ERROR
 					return -1;
 				}
@@ -53,7 +53,7 @@
 		}
 
 		//Get all the items in table X
-		private function getAllFromTable($table,$start_at,$length) {
+		private function getAllFromTable($table,$start_at=0,$length=99999999) {
 			//SQL injection protection
 			if ($this->isOnlyNumbers($start_at) && 
 				$this->isOnlyNumbers($length) && 
@@ -83,6 +83,7 @@
 			}
 		}
 
+		//make a title into a urlname
 		public function makeURL($title) {
 			$string = strtolower(trim($title));
 			$string = preg_replace("/[\t\b ]+/", "-", $string);
@@ -96,16 +97,29 @@
 
 		//---------------- Posts ----------------		
 
+		public function countPosts(){
+			$stmt = $this->dbh->prepare("SELECT COUNT(*) AS total FROM post");
+			if ($stmt->execute()) {
+				//Fetch an associative array, which will only contain the total
+				$fetch = $stmt->fetch(PDO::FETCH_ASSOC);
+				return intval($fetch['total']);
+			} else {
+				//if SQL failed, return it as a response
+				return new sqlError("Failed to count posts, error is ".$stmt->errorInfo()[2]);
+			}
+		}
+
 		//Get all posts from start_at to length+start_at
-		public function getPosts($start_at,$length) {
+		public function getPosts($start_at=0,$length=99999999) {
 			return $this->getAllFromTable("post",$start_at,$length);
 		}
 
-		public function getPostsDateOrder($start_at,$length) {
-			if ($this->isOnlyNumbers($start_at) && 
+		//get posts by order of date
+		public function getPostsDateOrder($start_at=0,$length=99999999) {
+			if ($this->isOnlyNumbers($start_at) &&
 				$this->isOnlyNumbers($length)) {
 					//Find all posts from 'start_at' of length 'length'
-					$stmt = $this->dbh->prepare("SELECT * FROM post WHERE id >= :start_at ORDER BY date DESC LIMIT :length");
+					$stmt = $this->dbh->prepare("SELECT * FROM post ORDER BY date DESC LIMIT :start_at, :length");
 					$stmt->bindValue(':start_at', $start_at, PDO::PARAM_INT);
 					$stmt->bindValue(':length', $length, PDO::PARAM_INT);
 					if ($stmt->execute()) {
@@ -128,15 +142,16 @@
 		}
 
 		//Get a list of PostIDs by a Tag name/ID
-		public function getPostsByTag($tag) {
+		public function getPostsByTag($tag,$start_at=0,$length=99999999) {
 			//get the ID of the tag if it isn't already an ID.
 			$tagID = $this->ensureID($tag);
 			if ($tagID instanceof sqlError) {
 				return $tagID;
 			}
-
-			$stmt = $this->dbh->prepare("SELECT post.* FROM post,tagpost WHERE tagpost.tagid = :tagID AND post.id = tagpost.postid ORDER BY post.date DESC;");
+			$stmt = $this->dbh->prepare("SELECT * FROM post WHERE id in (SELECT postid from tagpost WHERE tagid = :tagID) ORDER BY date DESC LIMIT :start_at, :length;");
 			$stmt->bindValue(':tagID', $tagID, PDO::PARAM_INT);
+			$stmt->bindValue(':start_at', $start_at, PDO::PARAM_INT);
+					$stmt->bindValue(':length', $length, PDO::PARAM_INT);
 			if (!$stmt->execute()){
 				return new sqlError("Failed to query database, error is: ".$stmt->errorInfo()[2]);
 			}
@@ -144,21 +159,40 @@
 			return $stmt->fetchAll(PDO::FETCH_ASSOC);
 		}
 
+		//Count the number of posts with this tag
+		public function countPostsByTag($tag){
+			//get the ID of the tag if it isn't already an ID.
+			$tagID = $this->ensureID($tag);
+			if ($tagID instanceof sqlError) {
+				return $tagID;
+			}
+
+			$stmt = $this->dbh->prepare("SELECT COUNT(*) AS total FROM post WHERE id in (SELECT postid from tagpost WHERE tagid = :tagID);");
+			$stmt->bindValue(':tagID', $tagID, PDO::PARAM_INT);
+			if ($stmt->execute()){
+				$fetch = $stmt->fetch(PDO::FETCH_ASSOC);
+				return intval($fetch['total']);
+			} else {
+				//if SQL failed, return it as a response
+				return new sqlError("Failed to count posts by tag, error is ".$stmt->errorInfo()[2]);
+			}
+		}
+
 		//---------------- Tags ----------------
 
 		//Get all tags from start_at to length+start_at
-		public function getTags($start_at,$length) {
+		public function getTags($start_at=0,$length=99999999) {
 			return $this->getAllFromTable("tag",$start_at,$length);
 		}
 
 		//Get all tagPosts from start_at to length+start_at
-		public function getTagPosts($start_at,$length) {
+		public function getTagPosts($start_at=0,$length=99999999) {
 			return $this->getAllFromTable("tagpost",$start_at,$length);
 		}
 
 		//Get a list of TagIDs by a Post ID
 		public function getTagsByPost($postID) {
-			$stmt = $this->dbh->prepare("SELECT tag.* FROM tag,tagpost WHERE tagpost.postid = :postID AND tag.id = tagpost.tagid;");
+			$stmt = $this->dbh->prepare("SELECT * FROM tag WHERE id in (SELECT tagid from tagpost WHERE postid = :postID);");
 			$stmt->bindValue(':postID', $postID, PDO::PARAM_INT);
 			if (!$stmt->execute()){
 				return new sqlError("Failed to query database, error is: ".$stmt->errorInfo()[2]);
@@ -179,9 +213,6 @@
 			if ($stmt->execute()){
 				//Fetch all the results
 				$results =  $stmt->fetch(PDO::FETCH_ASSOC);
-				if ($results == false){
-					return new sqlError("No Matching Posts");
-				}
 				return $results;
 			} else {
 				return new sqlError("Failed to get post info, error is: ".$stmt->errorInfo()[2]);
@@ -198,9 +229,6 @@
 					if ($stmt->execute()){
 						//Fetch all the results
 						$results =  $stmt->fetch(PDO::FETCH_ASSOC);
-						if ($results == false){
-							return new sqlError("No Matching Posts");
-						}
 						return $results;
 					} else {
 						return new sqlError("Failed to get post info, error is: ".$stmt->errorInfo()[2]);
@@ -225,9 +253,6 @@
 			if ($stmt->execute()){
 				//Fetch all the results
 				$results =  $stmt->fetch(PDO::FETCH_ASSOC);
-				if (!$results){
-					return new sqlError("No Matching Tags");
-				}
 				return $results;
 			} else {
 				return new sqlError("Failed to get tag name, error is: ".$stmt->errorInfo()[2]);
@@ -242,9 +267,6 @@
 				return new sqlError("Failed to query database, error is: ".$stmt->errorInfo()[2]);
 			}
 			$array = $stmt->fetch(PDO::FETCH_NUM);
-			if (!$array) {
-				return new sqlError("No matching Tags");
-			}
 			return (int)$array[0];
 		}
 
@@ -263,9 +285,6 @@
 				return new sqlError("Failed to query database, error is: ".$stmt->errorInfo()[2]);
 			}
 			$array = $stmt->fetch(PDO::FETCH_NUM);
-			if (!$array) {
-				return new sqlError("No matching Posts");
-			}
 			return (int)$array[0];
 		}
 
@@ -307,8 +326,15 @@
 				$date = date('Y-m-d H:i:s');
 			}
 
+			$urlname = $this->makeURL($title);
+
+			//if the urlname already exists
+			if ($this->getPostByUrlname($urlname)) {
+				return new sqlError("Failed to add post, a title with this url already exists");
+			}
+
 			$stmt = $this->dbh->prepare("INSERT INTO post VALUES (NULL,:urlname,:datetime,:author,:title,:flavour,:content);");
-			$stmt->bindValue(':urlname', $this->makeURL($title), PDO::PARAM_STR);
+			$stmt->bindValue(':urlname', $urlname, PDO::PARAM_STR);
 			$stmt->bindValue(':datetime', $date, PDO::PARAM_STR);
 			$stmt->bindValue(':author', $author, PDO::PARAM_STR);
 			$stmt->bindValue(':title', $title, PDO::PARAM_STR);
@@ -318,7 +344,7 @@
 			if ($stmt->execute()) {
 				return $this->dbh->lastinsertId();
 			} else {
-				return new sqlError("Failed to query database, error is:".$stmt->errorInfo()[2]);
+				return new sqlError("Failed to add post, error is:".$stmt->errorInfo()[2]);
 			}
 		}
 
@@ -391,7 +417,7 @@
 				return new sqlError("Failed to query database, error is: ".$stmt->errorInfo()[2]);
 			}
 			//remove the tag if no other posts are assigned to it
-			if (count($this->getPostsByTag($tag)) == 0) {
+			if (count($this->getPostsByTag($tag,0,99999999)) == 0) {
 				$this->deleteTag($tag);
 			}
 
@@ -517,7 +543,12 @@
 				}
 				if ($title != "") {
 					$stmt->bindValue(':title', $title, PDO::PARAM_STR);
-					$stmt->bindValue(':urlname', $this->makeURL($title), PDO::PARAM_STR);
+					$urlname = $this->makeURL($title);
+					//if the urlname already exists
+					if ($this->getPostByUrlname($urlname)['id'] != $postID) {
+						return new sqlError("Failed to edit post, a post with this url already exists");
+					}
+					$stmt->bindValue(':urlname', $urlname, PDO::PARAM_STR);
 				}
 				if ($flavour != "") {
 					$stmt->bindValue(':flavour', $flavour, PDO::PARAM_STR);

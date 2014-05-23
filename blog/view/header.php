@@ -17,19 +17,18 @@
 <meta charset='utf-8'>
 <link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css"></link>
 <link rel="stylesheet" type="text/css" href="/css/styles.css"></link>
+<?php
+if (isset($GLOBALS['canonical'])) {
+	echo "<link rel=\"canonical\" href=\"".Conf::URL.$GLOBALS['canonical']."\" />";
+}
+?>
+<script src="/js/script.js"></script>
+<!-- Hide elements so they fade in if javascript is disabled -->
+<style> article[anim="1"] {opacity:0;}</style>
+<noscript>
+<style> article[anim="1"] {opacity:1;}</style>
+</noscript>
+
 <title><?php
 	echo getTitle();
 ?></title>
-
-<header>
-	<a href="/">
-	<div>
-		<h1><?php echo Conf::Title; ?></h1>
-		<small><p><?php echo Conf::SubTitle; ?></p></small>
-	</div>
-	</a>
-</header>
-<ul class="nav nav-tabs container">
-	<li class="active"><a href="#">Blog</a></li>
-	<li><a href="#">About Me</a></li>
-</ul>

@@ -18,7 +18,6 @@
 
 		//Parse a $_POST of the add-a-post form
 		public function parsePost($post){
-			//TODO: find a way of naming variables, to future-proof this function call:
 			if (post\checkForm($this,$post)) {
 				//$p is either a postID or an sqlError
 				$p = $this->sqlset->addPost(

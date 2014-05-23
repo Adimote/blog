@@ -3,9 +3,11 @@
 //Renders an array of posts into HTML and returns it
 function renderPostList($posts) {
 	$result = "";
+	$i = 1;
 	foreach ($posts as $post) {
+		$i ++;
 		//render the post in preview mode
-		$text = renderPost($post,true);
+		$text = renderPost($post,true,$i);
 		$result .= $text;
 	}
 	return $result;
@@ -20,7 +22,7 @@ function renderTagList($tags) {
 		$id = htmlspecialchars($t['id'],ENT_QUOTES);
 		$name = htmlspecialchars($t['tag']);
 		$text = <<<"HTML"
-<a href="postsbytag.php?tag={$id}" class="label label-primary tag">
+<a href="/tag/{$name}/" class="label label-primary tag">
 	{$name}
 </a>&nbsp;
 HTML;
@@ -31,9 +33,9 @@ HTML;
 
 
 //Render a post, $is_preview is true if you just want to show the flavour text
-function renderPost($post,$is_preview) {
+function renderPost($post,$is_preview,$animate=0) {
 	$urlname = $post['urlname'];
-	$posturl = "post.php?name=".$urlname;
+	$posturl = "/".$urlname."/";
 	$title = htmlspecialchars($post['title']);
 
 	$sqldate = htmlspecialchars($post['date'],ENT_QUOTES);
@@ -43,15 +45,23 @@ function renderPost($post,$is_preview) {
 
 	if ($is_preview) {
 		$content = htmlspecialchars($post['flavour']);
+		//Tell the javsacript to make it clickable
+		$attribute = "href=\"{$posturl}\"";
+		$extraclasses = "preview";
 	} else {
 		$content = $post['content'];
+		$attribute = "";
+		$extraclasses = "";
+	}
+
+	if ($animate > 0) {
+		$attribute = $attribute." anim=1";
 	}
 
 	if (isset($GLOBALS['admin'])) {
 		$id = htmlspecialchars($post['id']);
 		$admin = <<<"HTML"
-<a class="btn btn-primary" href="/secure/post-edit.php?id={$id}
-">
+<a class="btn btn-primary" href="/secure/post-edit.php?id={$id}">
 	Edit
 </a>
 HTML;
@@ -61,14 +71,14 @@ HTML;
 
 	//Compile it into a string
 	$text = <<<"HTML"
-<article class="well">
+<article {$attribute} class="well {$extraclasses}">
 	<header>
 		<small>
 			<p class="text-right"> Published:
 			<a href="{$posturl}"><time pubdate datetime="{$sqldate}">{$nicedate}</time></a></p>
 		</small>
 		<a href="{$posturl}">
-		<h2>{$title}</h2>
+			<h2>{$title}</h2>
 		</a>
 		<hr/>
 	</header>

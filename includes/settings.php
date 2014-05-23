@@ -6,6 +6,8 @@
 	class Conf {
 		//Homepage settings
 		const Title = "Test Blog";
-		const Home_PerPage = 1000;
+		const SubTitle = "a blog";
+		const Home_PerPage = 3;
+		const URL = "http://localhost";
 	}
 ?>

@@ -1,130 +1,245 @@
-.alert {
-    -webkit-animation: fadein 0.5s; /* Safari and Chrome */
-       -moz-animation: fadein 0.5s; /* Firefox */
-        -ms-animation: fadein 0.5s; /* Internet Explorer */
-         -o-animation: fadein 0.5s; /* Opera */
-            animation: fadein 0.5s;
-	animation-timing-function:ease-in;
-	-webkit-animation-timing-function:ease-in;
-}
-
 /* Page Header */
-body>header {
-    text-align: center;
-    background-color: #E4E4FF;
+    body>header {
+        text-align: center;
+        background-color: #E4E4E4;
+        width:100%;
+        position: fixed;
+        z-index: -100;
+    }
+
+    /* spacer div to leave space for the header*/
+    .spacer {
+        height:95px;
+        width:100%;
+        margin: 0;
+        padding-top: 0;
+        display:block;
+    }
+
+    #pagehead {
+        transition: opacity 0.2s;
+        -webkit-transition: opacity 0.2s;
+    }
+
+    body>header:hover {
+        background-color: #FFE8BA;
+    }
+
+    /* Page Header Clickable area */
+    body>header>a {
+        display:inline-block;
+        width: 100%;
+        height: 100%;
+        padding: 5px;
+    }
+
+    body>header>a:link {
+        color:black;
+        text-decoration: none;
+    }
+
+    body>header>a:visited {
+        color:black;
+    }
+
+    body>header>a:hover {
+        /*color:#418BCA;*/
+        color:#FF7F00;
+    }
+
+/* End Page Header */
+
+/* Main Body */
+    main {
+        padding-top: 10px;
+        box-shadow: 0 -3px 5px rgba(0,0,0,0.15);
+        border-style: solid;
+        /*border-color: #DDD;*/
+        border-color: #E60;
+        border-width: 1px;
+        background-color: white;
+        overflow: hidden;
+    }
+/* End Main Body */
+
+/* Perspective */
+    .perspective {
+        perspective-origin: center;
+        -webkit-perspective-origin: center;
+        perspective: 800px;
+        /*-webkit-perspective: 800px;*/
+    }
+
+    .animate {
+        animation: flipin 0.9s;
+        -webkit-animation: flipin 0.9s;
+    }
+
+    /*main>.nav {
+        animation: fadein 0.5s;
+        -webkit-animation: fadein 0.5s;
+    }*/
+
+    @-webkit-keyframes flipin {
+        0%  {
+            -webkit-transform: rotateX(90deg) rotateY(20deg) translateY(-100px) translateZ(-500px);
+        }
+        50% {
+            -webkit-transform: rotateX(-10deg) translateY(40px) translateZ(-30px);
+        }
+    }
+
+    @keyframes flipin {
+        0%  {
+            transform: rotateX(90deg) translateY(-100px) translateZ(-500px);
+        }
+        50% {
+            transform: rotateX(-10deg) translateY(40px) translateZ(-30px);
+        }
+    }
+/* End Perspective */
+
+/* Page Navigation */
+    main>.nav {
+        margin: 0 0 15px 0;
+        position: relative;
+        z-index: 1;
+    }
+    main>.nav>a, main>.nav>.text-center {
+        padding: 10px 10px;
+        margin: 0 5px;
+    }
+/* End Page Navigation */
+
+/* Tabs */
+    .nav-tabs {
+        /*background-color: #888;*/
+        background-color: #E60;
+        padding-top: 1px;
+        padding-left: 4px;
+        box-shadow: 0 -1px 6px rgba(0,0,0,0.1);
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        border-style: solid;
+        border-color: #CCC;
+        border-width: 1px 0 0 0;
+    }
+
+    .nav-tabs>li {
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    /*inactive tabs have white text*/
+    .nav-tabs>li:not(.active)>a:link,
+    .nav-tabs>li:not(.active)>a:visited {
+        color:white;
+    }
+
+    /*active tabs have grey text*/
+    .nav-tabs>li:not(.active)>a:hover,
+     .nav-tabs>li:not(.active)>a:hover {
+        color:#555;
+    }
+
+    /*mouseover a tab*/
+    .nav-tabs>li>a:hover{
+        /*background-color: #DDD;*/
+        background-color: #F93;
+        border-style: solid;
+        border-width: 1px 1px 0 1px;
+        margin-bottom: -1px;
+        border-color: #FB4;
+        color:white;
+    }
+
+/* End Tabs*/
+
+/* Breadcrumbs */
+
+    .breadcrumbs {
+        list-style: none;
+        padding: 0 0 20px 0;
+    }
+
+    .breadcrumbs>li {
+        display: block;
+        float: left;
+    }
+
+    .breadcrumbs>li::before {
+        padding: 0 2px;
+        content:">";
+        display: block;
+        float: left;
+    }
+
+    .breadcrumbs>li:first-child::before {
+        content:"";
+    }
+
+/* End Breadcrumbs */
+
+/* Subtitles have a lighter colour */
+small>p {
+    color:#777;
 }
 
-body>header:hover {
-    background-color: #FFE8BA;
-}
-
-/* Page Header Clickable area */
-body>header>a {
-    display:inline-block;
-    width: 100%;
-    height: 100%;
-    padding: 5px;
-}
-
-/* Main Body area */
-main {
-    padding-top: 10px;
-    box-shadow: 0 -3px 5px rgba(0,0,0,0.15);
-    border-style: solid;
-    /*border-color: #DDD;*/
-    border-color: #E60;
-    border-width: 1px;
-}
-
-main>.nav {
-    margin: 0 0 15px 0;
-}
-main>.nav>a {
-    padding: 10px 20px;
-    margin: 0 5px;
-}
-
-.nav-tabs {
-    /*background-color: #888;*/
-    background-color: #E60;
-    padding-top: 2px;
-    padding-left: 4px;
-    box-shadow: 0 -2px 6px rgba(0,0,0,0.2);
-    border-top-left-radius: 6px;
-    border-top-right-radius: 6px;
-    border-style: solid;
-    border-color: #CCC;
-    border-width: 1px 0 0 0;
-}
-
-.nav-tabs>li {
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-}
-
-/*Non-active links are white*/
-.nav-tabs>li:not(.active)>a:link,
-.nav-tabs>li:not(.active)>a:visited {
-    color:white;
-}
-
-/*Non-active links are white*/
-.nav-tabs>li:not(.active)>a:hover,
- .nav-tabs>li:not(.active)>a:hover {
-    color:#555;
-}
-
-/*Navigation tabs, not selected, not hovering*/
-/*.nav-tabs>li>a:not(:hover){
-    border-style: solid;
-    border-width: 1px 1px 0 1px;
-    border-color: #AAA;
-}*/
-
-.nav-tabs>li>a:hover{
-    /*background-color: #DDD;*/
-    background-color: #F93;
-    border-style: solid;
-    border-width: 1px 1px 0 1px;
-    margin-bottom: -1px;
-    border-color: #FB4;
-    color:white;
-}
-
+/* Orange variation on a bootstrap button */
 .btn-orange {
     color: #FFF;
     background-color: #E60; 
     border-color: #D40;
 }
+.pagination-orange>li>a {
+    background-color: #E60; 
+    border-color: #D40;
+    color:white;
+}
 
-/*.well {
-    background-color: transparent;
-    border-width: 0 0;
-    box-shadow: 0 2px 1px rgba(0,0,0,0.2), 0 -2px 1px rgba(0,0,0,0.2);
-}*/
+/* Infinite Scroll */
+.full-btn {
+    display: block;
+    text-align: center;
+    background-color: #E60;
+    margin: 15px 0;
+    padding: 5px;
+    border-radius: 5px;
+    color: white;
+    width:100%;
+    border-color: #D40;
+    border-style: solid;
+    border-width: 1px;
+}
 
-body>header>a:link {
-    color:black;
+.full-btn:hover {
+    color: black;
     text-decoration: none;
+    cursor: pointer;
 }
 
-body>header>a:visited {
-    color:black;
+/* Articles */
+    /* preview articles are clickable */
+    .preview:hover {
+        background-color: #FBFBFB;
+        cursor:pointer;
+    }
+    .preview:hover>*>a {
+        text-decoration: underline;
+    }
+    article>header>a>h1 {
+        margin-top: 5px;
+    }
+/* End Articles */
+
+/* Bottom Nav */
+.hidden-nav>a {
+    display:none;
 }
 
-body>header>a:hover {
-    /*color:#428BCA;*/
-    color:#FF7F00;
-}
-
-/* Page Info */
-small>p {
-    color:#666;
-    margin: 0;
-}
-
-article>header>a>h2 {
-    margin-top: 5px;
+/* Bigger tags when in mobile browser */
+.tagcontainer>a {
+    word-wrap:break-word;
 }
 
 @media (max-width: 768px) { 
@@ -134,59 +249,63 @@ article>header>a>h2 {
     }
 }
 
+/*Footer at bottom of page*/
 .footer {
-    margin-top: 50px;
-    color: #999;    
-}
-
-.nomargins {
-	margin:0 !important;
-}
-
-.fullwidth {
-	width:100%;
-}
-
-.error {
-	background-color: #D77;
-	border-color: red;
-}
-
-.success {
-	background-color: #7D7;
-	border-color: green;
+    margin: 50px;
+    /*light grey*/
+    color: #999;
 }
 
 .rounded-edge {
 	border-radius: 4px;
-	overflow: hidden;	
+	overflow: hidden;
 }
 
-@keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
+/* Alerts */
+    .alert {
+        -webkit-animation: fadein 0.5s; /* Safari and Chrome */
+           -moz-animation: fadein 0.5s; /* Firefox */
+            -ms-animation: fadein 0.5s; /* Internet Explorer */
+             -o-animation: fadein 0.5s; /* Opera */
+                animation: fadein 0.5s;
+        animation-timing-function:ease-in;
+        -webkit-animation-timing-function:ease-in;
+    }
 
-/* Firefox */
-@-moz-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
+    @keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
 
-/* Safari and Chrome */
-@-webkit-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}
+    /* Firefox */
+    @-moz-keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
 
-/* Internet Explorer */
-@-ms-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}​
+    /* Safari and Chrome */
+    @-webkit-keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }
 
-/* Opera */
-@-o-keyframes fadein {
-    from { opacity: 0; }
-    to   { opacity: 1; }
-}​
+    /* Internet Explorer */
+    @-ms-keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }​
+
+    /* Opera */
+    @-o-keyframes fadein {
+        from { opacity: 0; }
+        to   { opacity: 1; }
+    }​
+/* End Alerts */
+
+/* Animations */
+    /*@keyframes moveonin {
+        0% {    }
+        100% {  }
+    }*/
+
+/* End Animations */

@@ -39,7 +39,7 @@
 		//if editid is something other than numbers, throw an error
 		} elseif(preg_match('/[^0-9]/',$post['editid'])) {
 			$phr->message = new \Message("error","HTTP POST FAILED: invalid Edit ID");
-		}else{
+		} else {
 			return true;
 		}
 		return false;
@@ -57,6 +57,8 @@
 			$author = htmlspecialchars($phr->post['who'],ENT_QUOTES);
 			//Title form element
 			$postTitle = htmlspecialchars($phr->post['title'],ENT_QUOTES);
+			//urlname
+			$urlname = htmlspecialchars($phr->post['urlname'],ENT_QUOTES);
 			//Flavour Text form element
 			$flavour = htmlspecialchars($phr->post['flavour']);
 			//Content form element
@@ -150,7 +152,10 @@ HTML;
 		<div class="form-group">
         	<label class="col-md-2 control-label">Title:</label>
 			<div class="col-md-9">
-				<input type="text" class="form-control" name='title' value="{$postTitle}"/>
+				<div class="input-group">
+					<input type="text" class="form-control" id="title" name='title' value="{$postTitle}"/>
+  					<span class="input-group-addon">url: <span id="urlname">{$urlname}</span></span>
+				</div>
 			</div>
 		</div>
 
@@ -223,11 +228,6 @@ HTML;
 		}
 	}
 
-	//When the content is submitted, copy all of the text in the main box to a hidden input
-	i("post-form").onsubmit = function() {
-		i("content-inserter").value = content.getValue();
-	};
-
 	//ACE Editor Initialisation
 	var content = ace.edit('content');
 	content.setTheme('ace/theme/monokai');
@@ -240,6 +240,27 @@ HTML;
 			preview();
 		}
 	});
+
+	window.onload = function() {
+		var title = i("title");
+		var update = function(){
+			var text = title.value;
+			text = text.toLowerCase().trim();
+			text = text.replace(/[\t\b ]+/g, "-");
+			text = text.replace(/[^a-z0-9\-]/g, "");
+			i("urlname").innerHTML = escape(text);
+		};
+		title.onkeydown = update;
+		title.onchange = update;
+		title.onpaste = update;
+		title.oninput = update;
+
+
+		//When the content is submitted, copy all of the text in the main box to a hidden input
+		i("post-form").onsubmit = function() {
+			i("content-inserter").value = content.getValue();
+		};
+	};
 </script>
 HTML;
 	}
