@@ -3,12 +3,15 @@
 	//SQLSETTINGS
 	include_once 'sql-config.php';
 	include_once 'settings.php';
+	include_once 'logging.php';
 
 	//Error format
 	class sqlError {
 		public $message;
 		public function __construct($Message = "") {
 			$this->message = $Message;
+			//log the error
+			logger::log($Message);
 		}
 	}
 
@@ -38,7 +41,6 @@
 					return -1;
 				}
 			}
-			//otherwise return sqlError
 			return $tagID;
 		}
 

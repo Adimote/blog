@@ -12,17 +12,19 @@
 
 	if (!$post) {
 		$mess = new Message("error","No posts found by this name");
+		logger::log("Invalid Page Number ".htmlspecialchars($page));
 		//404, Not found
 		http_response_code(404);
 	}
 	
-	//display the header
+	//set the variables for the header to add
 	$GLOBALS['pageTitle'] = htmlspecialchars($post['title']);
 	$GLOBALS['breadcrumbs'] = array(
 			'blog'=>'/',
 			$post['title']=>'/'.$post['urlname']
 		);
 	$GLOBALS['canonical'] = "/".$post['urlname']."/";
+	//display the header
 	include_once 'header.php';
 	include_once 'header-body.php';
 ?>
@@ -51,8 +53,6 @@ else:
 			if (count($tags) != 0) {
 				echo renderTagList($tags);
 			} else {
-				//404, not found
-				http_response_code(404);
 				echo "No Tags Found";
 			}
 			?>

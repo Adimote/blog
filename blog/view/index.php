@@ -1,5 +1,6 @@
 <?php
 	include_once '../../includes/sql-manager.php';
+	include_once '../../includes/logging.php';
 	include_once '../common.php';
 	include_once 'rendering.php';
 	include_once 'pagination.php';
@@ -18,6 +19,7 @@
 	//if the page number has any letters, throw an error
 	if (!isOnlyNumbers($page)) {
 		$mess = new Message("error","Invalid Page Number");
+		logger::log("Invalid Page Number ".htmlspecialchars($page));
 		//404, Not Found
 		http_response_code(404);
 	}
