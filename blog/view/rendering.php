@@ -33,7 +33,7 @@ HTML;
 
 
 //Render a post, $is_preview is true if you just want to show the flavour text
-function renderPost($post,$is_preview,$animate=0) {
+function renderPost($post,$is_preview=false,$animate=0) {
 	$urlname = $post['urlname'];
 	$posturl = "/".$urlname."/";
 	$title = htmlspecialchars($post['title']);
@@ -45,6 +45,9 @@ function renderPost($post,$is_preview,$animate=0) {
 
 	if ($is_preview) {
 		$content = htmlspecialchars($post['flavour']);
+		$content .= <<<HTML
+		<a class="readmore">Read more...</a>
+HTML;
 		//Tell the javsacript to make it clickable
 		$attribute = "href=\"{$posturl}\"";
 		$extraclasses = "preview";
@@ -78,7 +81,7 @@ HTML;
 			<a href="{$posturl}"><time pubdate datetime="{$sqldate}">{$nicedate}</time></a></p>
 		</small>
 		<a href="{$posturl}">
-			<h2>{$title}</h2>
+			<h1>{$title}</h1>
 		</a>
 		<hr/>
 	</header>
@@ -93,4 +96,20 @@ HTML;
 HTML;
 	return $text;
 }
+
+function renderBreadcrumbs($crumbArray) {
+	$crumbs = "";
+	foreach ($crumbArray as $i=>$crumb) {
+		$crumbs .= <<<HTML
+	<li><a href={$crumb}>{$i}</a></li>
+HTML;
+	}
+	$rendered = <<<HTML
+<ol class="breadcrumb">
+	{$crumbs}
+</ol>
+HTML;
+	echo $rendered;
+}
+
 ?>

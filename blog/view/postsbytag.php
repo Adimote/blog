@@ -83,6 +83,7 @@ echo "<script>PAGENUM = $page;  TAG=\"$tag\"; MODE=\"postsByTag\";</script>";
 
 include_once 'header-body.php';
 ?>
+<div id="pagecontainer">
 <?php if ($tagname):?>
 	<h2>Viewing posts Tagged '<?php echo $tagname ?>'</h2>
 <?php endif; ?>
@@ -93,8 +94,7 @@ if (isset($mess)) {
 } else {
 	echo renderPostList($posts);
 }
-?>
-<?php
+
 //Navigation bar
 echo <<<"HTML"
 <div id="pagenav" class="nav">
@@ -104,9 +104,11 @@ echo <<<"HTML"
 <a href="/tag/{$tagurl}/{$next}/" {$nextDisabled} class="btn btn-orange pull-right"><span class="glyphicon glyphicon-chevron-right"></span></a>
 <p class="text-center">Page {$page} / {$totalpages}</p>
 </div>
-<a id="toggleInfinite" class="full-btn">
+<a id="toggleInfinite" class="full-btn nav">
 	Click here to enable infinite scroll
 </a>
+</div>
+<p class="text-center hidden" id="infiniLoading"><b>Loading...</b></p>
 HTML;
-	?>
+?>
 </main>

@@ -22,7 +22,7 @@ if (isset($GLOBALS['canonical'])) {
 	echo "<link rel=\"canonical\" href=\"".Conf::URL.$GLOBALS['canonical']."\" />";
 }
 ?>
-<script src="/js/script.js"></script>
+<script async src="/js/script.js"></script>
 <!-- Hide elements so they fade in if javascript is disabled -->
 <style> article[anim="1"] {opacity:0;}</style>
 <noscript>

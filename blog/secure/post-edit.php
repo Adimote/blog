@@ -15,10 +15,10 @@
 			$this->sqlset = new sqlSetter();
 		}
 
-		//Parse a $_POST of the add-a-post form
+		//Parse a $_POST of the edit-a-post form
 		public function parsePost($post){
 			if (post\checkForm($this,$post)) {
-				// If it's an Edit, then editid will be sent
+				// editid will be sent
 				$postID = $post['editid'];
 				//$q is either a postID or an sqlError
 				$q = $this->sqlset->editPost(
@@ -48,6 +48,11 @@
 			//Also prevents XSS
 			if ($post instanceof sqlError) {
 				$this->message = new Message("error",$post->message);
+				return False;
+			}
+			//throw an error if the post doesn't exist
+			if (!$post){
+				$this->message = new Message("error","Post doesn't exist");
 				return False;
 			}
 			$this->post = $post;

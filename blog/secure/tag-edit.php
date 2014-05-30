@@ -16,8 +16,14 @@
 			if ($name instanceof sqlError) {
 				$this->message = new Message("error",$name->message);
 				$this->edit = false;
-				return;
+				return false;
 			}
+			//throw an error if the post doesn't exist
+			if (!$name){
+				$this->message = new Message("error","Tag doesn't exist");
+				return False;
+			}
+			
 			$this->tag = $name;
 			$this->edit = true;
 		}

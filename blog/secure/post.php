@@ -39,6 +39,9 @@
 		//if editid is something other than numbers, throw an error
 		} elseif(preg_match('/[^0-9]/',$post['editid'])) {
 			$phr->message = new \Message("error","HTTP POST FAILED: invalid Edit ID");
+		//if the url name contains1 only numbers, fail because it'll confuse the pagination
+		} elseif(!preg_match('/[^0-9]/',$post['urlname'])) {
+			$phr->message = new \Message("error","HTTP POST FAILED: url for title must contain something other than numbers");
 		} else {
 			return true;
 		}
@@ -175,9 +178,10 @@ HTML;
 					<div id='content' style='height:500px'></div>
 				</div>
 			</div>
-			<div class="col-md-6" >
-				<div id='html-preview'></div>
-			</div>
+			<article class="container">
+				<div id='html-preview' class="col-md-6 well">
+				</div>
+			</article>
 			<input type='hidden' name='content' id='content-inserter'/>
 		</div>
 
@@ -254,7 +258,8 @@ HTML;
 		title.onchange = update;
 		title.onpaste = update;
 		title.oninput = update;
-
+		//call it on start
+		update();
 
 		//When the content is submitted, copy all of the text in the main box to a hidden input
 		i("post-form").onsubmit = function() {

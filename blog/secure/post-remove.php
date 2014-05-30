@@ -26,8 +26,11 @@
 	}
  	$phr = new PostRemoveHandler();
 	if ($_GET) {
-		if ($phr->Remove($_GET) >= 0) {
-			$phr->message = new Message("success",htmlspecialchars($_GET['type'])." Successfully Removed!");
+		$result = $phr->Remove($_GET);
+		if ($result instanceof sqlError) {
+			$phr->message = new Message("error",$result->message);
+		} else {
+			$phr->message = new Message("success","Post Successfully Removed!");
 		}
 	}
 ?>

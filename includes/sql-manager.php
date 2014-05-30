@@ -4,6 +4,7 @@
 	include_once 'sql-config.php';
 	include_once 'settings.php';
 	include_once 'logging.php';
+	include_once 'feeds.php';
 
 	//Error format
 	class sqlError {
@@ -344,6 +345,7 @@
 			$stmt->bindValue(':content', $content, PDO::PARAM_STR);
 			//Return the ID of the post if success
 			if ($stmt->execute()) {
+				feed::updateFeeds();
 				return $this->dbh->lastinsertId();
 			} else {
 				return new sqlError("Failed to add post, error is:".$stmt->errorInfo()[2]);
@@ -483,6 +485,7 @@
 			if (!$stmt->execute()){
 				return new sqlError("Failed to query database, error is: ".$stmt->errorInfo()[2]);
 			}
+			feed::updateFeeds();
 			return $postID;
 		}
 
@@ -568,6 +571,7 @@
 			} else {
 				return new sqlError("Invalid postID");
 			}
+			feed::updateFeeds();
 			return $postID;
 		}
 
@@ -585,7 +589,7 @@
 			if (!$stmt->execute()){
 				return new sqlError("Failed to query database, error is: ".$stmt->errorInfo()[2]);
 			}
-			return $tagID;	
+			return $tagID;
 		}
 	}
 ?>
