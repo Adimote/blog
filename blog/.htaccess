@@ -1,0 +1,76 @@
+Options +FollowSymLinks
+
+#--------------- Rewrite Rules -----------------------
+#
+#--------------- ------------- -----------------------
+RewriteEngine On
+RewriteBase /
+
+#--------------- www to not ----------------------
+
+# This checks to make sure the connection is not already HTTPS
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+
+RewriteCond %{HTTPS} on
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
+
+
+#--------------- Secure Rewrite ----------------------
+
+# This checks to make sure the connection is not already HTTPS
+RewriteCond %{HTTPS} !=on
+
+# Rewrite to https
+RewriteRule ^secure/?(.*)$ https://%{SERVER_NAME}/secure/$1 [R,L]
+
+#--------------- Exceptions --------------------------
+#feed.atom -> feed.atom
+RewriteRule ^feed\.atom$ - [NC,L]
+
+#robots.txt -> robots.txt
+RewriteRule ^robots\.txt$ - [NC,L]
+
+#min -> min
+RewriteRule ^min - [NC,L]
+
+#--------------- Niceify URLS ------------------------
+
+#About Me
+#/about?admin=1 -> /view/aboutme.php?admin=1
+RewriteRule ^about$ /view/aboutme.php [NC,L,QSA]
+
+#Home
+#/1/?admin=1 -> /view/index.php?page=1&admin=1
+RewriteRule ^([0-9\-]*)/?$ /view/index.php?page=$1 [NC,L,QSA]
+
+#Posts
+#/hello-world/?admin=1 -> /view/post.php?name=hello-world&admin=1
+RewriteRule ^([^/\?]+)/?$ /view/post.php?name=$1 [NC,L,QSA]
+
+#PostsByTag
+#/tags/blah/1/?admin=1 -> /view/postsbytag.php?page=1&admin=1
+RewriteRule ^tag/([^/\?]+)/?([0-9]*)/?$ /view/postsbytag.php?tag=$1&page=$2 [NC,L,QSA]
+
+#Infinite Posts
+#/infinite/1/?admin=1 -> /infinite/posts.php?page=1&admin=1 
+RewriteRule ^infinite/([0-9]*)/?$ /infinite/posts.php?page=$1 [NC,L,QSA]
+
+#Infinite PostsByTag
+#/infinite/tag/blah/1/?admin=1 -> /infinite/postsbytag.php?tag=1&page=1&admin=1
+RewriteRule ^infinite/tag/([^/\?]+)/?([0-9]*)/?$ /infinite/postsbytag.php?tag=$1&page=$2 [NC,L,QSA]
+
+#Home
+#/1 -> /1/
+#RewriteRule ^(.*[^/])$ $1/ [L,QSA]
+
+#--------------- Caching Files -----------------------
+#
+#--------------- ------------- -----------------------
+
+# 480 weeks
+#<FilesMatch "\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf|svg)$">
+#	Header set Cache-Control "max-age=290304000, public"
+#</FilesMatch>
