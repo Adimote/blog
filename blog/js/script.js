@@ -24,6 +24,7 @@ window.onload = function(){
 	var doc = document.documentElement;
 	var httpReq = null;
 	var anim = [];
+	var timers = [];
 	var infiniteEnabled = false;
 	var infiniteAllLoaded = false;
 	var infinitePage = 0;
@@ -211,10 +212,11 @@ window.onload = function(){
 			article.style.opacity = "1";
 			article.className += " animate";
 			anim --;
-			clearTimeout();
-			setTimeout(function(){
+			clearTimeout(timers);
+			timers = [];
+			timers.push(setTimeout(function(){
 				animate(anim);
-			},70);
+			},70));
 		}
 	}
 
