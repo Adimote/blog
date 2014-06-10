@@ -11,12 +11,11 @@ RewriteBase /
 # This checks to make sure the connection is not already HTTPS
 RewriteCond %{HTTPS} off
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ http://%1/$1 [R=301,L]
+RewriteRule ^(.*)$ http://%{SERVER_NAME}/$1 [R=301,L]
 
 RewriteCond %{HTTPS} on
 RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ https://%1/$1 [R=301,L]
-
+RewriteRule ^(.*)$ https://%{SERVER_NAME}/$1 [R=301,L]
 
 #--------------- Secure Rewrite ----------------------
 
