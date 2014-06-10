@@ -46,10 +46,10 @@ window.onload = function(){
 		if (infiniteEnabled) {
 			infinitePage = PAGENUM;
 			infiniteMode = MODE;
-			nav.className = "nav hidden-nav";
+			nav.className = "bottom-nav hidden-nav";
 			toggleInfinite.style.display = "none";
 		} else {
-			nav.className = "nav";
+			nav.className = "bottom-nav";
 			toggleInfinite.style.display = "";
 		}
 		//call the scroll function, to trigger any needed infinite scrolls
