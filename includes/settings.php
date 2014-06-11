@@ -7,9 +7,9 @@
 		//Homepage settings
 
 		//Title of blog
-		const Title = "Test Blog";
+		const Title = "// Comment It Out";
 		//Subtitle of blog
-		const SubTitle = "a blog";
+		const SubTitle = "a blog about Programming and Computer Science";
 
 		//Items per page on the homepage
 		const Home_PerPage = 5;

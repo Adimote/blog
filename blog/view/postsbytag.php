@@ -110,5 +110,5 @@ echo <<<"HTML"
 </div>
 <p class="text-center hidden" id="infiniLoading"><b>Loading...</b></p>
 HTML;
+include_once "footer.php";
 ?>
-</main>

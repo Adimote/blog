@@ -210,11 +210,25 @@ HTML;
 <script src='/js/ace/ace.js'></script>
 <script>
 function i(id) {return document.getElementById(id);}
+var htmlPreview = i('html-preview');
 function preview() {
-	var htmlPreview = i('html-preview');
-	htmlPreview.innerHTML = content.getValue();
+	htmlPreview.innerHTML = content.getValue().replace(/<pre><code.*?>\\n/,"<pre><code>");
 	//update mathJax
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub,htmlPreview]);
+	//update highlight.js
+	var pres = htmlPreview.getElementsByTagName("pre");
+	if (pres.length != 0) {
+		for (var i = 0; i < pres.length; i++) {
+			var pre = pres[i];
+			var codes = pre.getElementsByTagName("code");
+			if (codes.length != 0) {
+				for (var j = 0; j < codes.length; j++) {
+					var code = codes[j];
+					hljs.highlightBlock(code);
+				}
+			}
+		}
+	};
 }
 
 var Previewing = true;
@@ -228,6 +242,14 @@ function togglePreview() {
 		i('preview-button').removeAttribute('disabled');
 	}
 }
+
+function update(){
+	var text = title.value;
+	text = text.toLowerCase().trim();
+	text = text.replace(/[\t\b ]+/g, "-");
+	text = text.replace(/[^a-z0-9\-]/g, "");
+	i("urlname").innerHTML = escape(text);
+};
 
 //ACE Editor Initialisation
 var content = ace.edit('content');
@@ -244,13 +266,6 @@ content.getSession().on('change', function() {
 
 window.onload = function() {
 	var title = i("title");
-	var update = function(){
-		var text = title.value;
-		text = text.toLowerCase().trim();
-		text = text.replace(/[\t\b ]+/g, "-");
-		text = text.replace(/[^a-z0-9\-]/g, "");
-		i("urlname").innerHTML = escape(text);
-	};
 	title.onkeydown = update;
 	title.onchange = update;
 	title.onpaste = update;
@@ -260,10 +275,13 @@ window.onload = function() {
 
 	//When the content is submitted, copy all of the text in the main box to a hidden input
 	i("post-form").onsubmit = function() {
+		preview();
+		//todo fix this
 		i("content-inserter").value = content.getValue();
 	};
 };
 </script>
 HTML;
 }
+
 ?>

@@ -142,4 +142,6 @@ HTML;
 	$lister->parseGet($_GET['id']);
 
 	$lister->placeForm();
+	
+include_once "../view/footer.php";
 ?>

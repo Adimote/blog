@@ -139,7 +139,6 @@ window.onload = function(){
 			}
 		}
 	}
-	makeClickable();
 
 	// Fade the title on scroll
   	function fadeOnScroll(top) {
@@ -234,7 +233,6 @@ window.onload = function(){
 
 		doFlipins(top,height);
   	}
-	window.onscroll = scroll;
 
 	//Executes every second
 	function tick(){
@@ -245,5 +243,10 @@ window.onload = function(){
 			tick();
 		},1000);
 	}
-	tick();
+	if (head) {
+		window.onscroll = scroll;
+		makeClickable();
+		tick();	
+	}
+	
 }

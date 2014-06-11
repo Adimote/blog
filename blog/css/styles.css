@@ -272,6 +272,12 @@ small>p {
     article {
         word-wrap:break-word;
     }
+
+    pre {
+        background-color: #23241F;
+        border-color: #FFF;
+        padding: 0;
+    }
 /* End Articles */
 
 /* Bigger tags when in mobile browser */

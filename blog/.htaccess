@@ -32,6 +32,9 @@ RewriteRule ^feed\.atom$ - [NC,L]
 #robots.txt -> robots.txt
 RewriteRule ^robots\.txt$ - [NC,L]
 
+#robots.txt -> robots.txt
+RewriteRule \.html$ - [NC,L]
+
 #min -> min
 RewriteRule ^min - [NC,L]
 

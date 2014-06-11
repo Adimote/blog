@@ -50,3 +50,6 @@
 		<a class="btn btn-info" onclick="window.history.back()">Go Back</a>
 	</div>
 </div>
+<?php
+include_once "../view/footer.php";
+?>

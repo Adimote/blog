@@ -52,5 +52,6 @@ if ($_POST) {
 
 //Place the form
 post\placeForm($phr);
-	
+
+include_once "../view/footer.php";
 ?>
