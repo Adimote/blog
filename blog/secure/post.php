@@ -277,7 +277,7 @@ window.onload = function() {
 	i("post-form").onsubmit = function() {
 		preview();
 		//todo fix this
-		i("content-inserter").value = content.getValue();
+		i("content-inserter").value = content.getValue().replace(/<pre><code.*?>\\n/,"<pre><code>");
 	};
 };
 </script>
