@@ -11,7 +11,8 @@ include_once 'header-body.php';
 ?>
 <div>
 <h1>About Me</h1>
-<p>//TODO</p>
+<div class="well">
+//TODO
 </div>
 <?php
 include_once 'footer.php';
