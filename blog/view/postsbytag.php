@@ -67,7 +67,7 @@ if ($page == 1) {
 
 $GLOBALS['breadcrumbs'] = array(
 			'blog'=>'/',
-			'posts tagged '.$tagname=>"/tag/$tagname/"
+			'posts tagged \''.$tagname.'\''=>"/tag/$tagname/"
 		);
 
 include_once 'header.php';
