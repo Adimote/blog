@@ -16,8 +16,9 @@ if (isset($_GET['admin'])) {
 ?>
 <!DOCTYPE html>
 <meta charset='utf-8'>
+<link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
+<link type="text/css" rel="stylesheet" href="/css/styles.css" />
 <link type="text/css" rel="stylesheet" href="/js/highlight/styles/monokai_sublime.css" />
-<link type="text/css" rel="stylesheet" href="/min/g=css" />
 <!-- Script -->
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
@@ -35,7 +36,8 @@ TeX: {
 });
 </script>
 <script async src="/js/MathJax/MathJax.js"></script>
-<script async src="/min/g=js" onload="hljs.initHighlightingOnLoad();"></script>
+<script async src="/js/script.js"></script>
+<script async src="/js/highlight/highlight.pack.js" onload="hljs.initHighlightingOnLoad();"></script>
 <!-- End Script -->
 <?php
 if (isset($GLOBALS['canonical'])) {
