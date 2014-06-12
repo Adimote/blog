@@ -23,7 +23,7 @@ if (isset($_GET['admin'])) {
 <script type="text/x-mathjax-config">
 MathJax.Hub.Config({
 	extensions: ["tex2jax.js"],
-	jax: ["input/TeX", "output/HTML-CSS"],
+	jax: ["input/TeX", "output/SVG"],
 tex2jax: {
 	inlineMath: [ ['$','$'], ["\\(","\\)"] ],
 	displayMath: [ ["\\[","\\]"] ],
@@ -35,11 +35,8 @@ TeX: {
 "HTML-CSS": { availableFonts: ["TeX"] }
 });
 </script>
-<script src="/js/MathJax/MathJax.js"></script>
-<script src="/js/highlight/highlight.pack.js"></script>
-<script>
-	hljs.initHighlightingOnLoad();
-</script>
+<script async src="/js/MathJax/MathJax.js"></script>
+<script async src="/js/highlight/highlight.pack.js" onload="hljs.initHighlightingOnLoad();"></script>
 <!-- End Script -->
 <?php
 if (isset($GLOBALS['canonical'])) {

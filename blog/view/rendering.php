@@ -5,7 +5,6 @@ function renderPostList($posts) {
 	$result = "";
 	$i = 1;
 	foreach ($posts as $post) {
-		$i ++;
 		//render the post in preview mode
 		$text = renderPost($post,true,$i);
 		$result .= $text;
@@ -43,6 +42,8 @@ function renderPost($post,$is_preview=false,$animate=0) {
 
 	$author = htmlspecialchars($post['who']);
 
+	$attribute = "";
+
 	if ($is_preview) {
 		$content = htmlspecialchars($post['flavour']);
 		$content .= <<<HTML
@@ -53,7 +54,6 @@ HTML;
 		$extraclasses = "preview";
 	} else {
 		$content = $post['content'];
-		$attribute = "";
 		$extraclasses = "";
 	}
 
