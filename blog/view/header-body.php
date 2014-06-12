@@ -12,7 +12,6 @@ if (isset($GLOBALS['tab'])) {
 </header>
 <a class="spacer" href="/">
 </a>
-<!-- <div class="col-xs-2">Test</div> -->
 <div>
 <ul class="nav nav-tabs container">
 	<li <?php if ($tab == 0) echo "class=\"active\""?>><a href="/">Blog</a></li>

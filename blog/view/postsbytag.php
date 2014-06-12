@@ -65,6 +65,11 @@ if ($page == 1) {
 	$GLOBALS['canonical'] = "/tag/$tagname/$page/";
 }
 
+$GLOBALS['breadcrumbs'] = array(
+			'blog'=>'/',
+			'posts tagged '.$tagname=>"/tag/$tagname/"
+		);
+
 include_once 'header.php';
 
 if (!$prevDisabled) {

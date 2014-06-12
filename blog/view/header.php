@@ -1,7 +1,6 @@
 <?php
 include_once '../../includes/sql-manager.php';
 include_once '../common.php';
-
 function getTitle() {
 	$title = Conf::Title." | ";
 	if ($GLOBALS['pageTitle']) {

@@ -23,7 +23,7 @@
 			'blog'=>'/',
 			$post['title']=>'/'.$post['urlname']
 		);
-	$GLOBALS['canonical'] = "/".$post['urlname']."/";
+	$GLOBALS['canonical'] = '/'.$post['urlname']."/";
 	//display the header
 	include_once 'header.php';
 	include_once 'header-body.php';
