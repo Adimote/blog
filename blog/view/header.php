@@ -1,5 +1,7 @@
 <?php
 include_once '../../includes/sql-manager.php';
+include_once '../common.php';
+
 function getTitle() {
 	$title = Conf::Title." | ";
 	if ($GLOBALS['pageTitle']) {
@@ -49,3 +51,12 @@ if (isset($GLOBALS['canonical'])) {
 <title><?php
 	echo getTitle();
 ?></title>
+<?php
+//IE Detection
+if(preg_match('/(?i)msie [1-8]/',$_SERVER['HTTP_USER_AGENT']))
+{
+    // if IE
+    $message = new Message("warning","This Website is not optimised for Internet Explorer");
+    echo $message->formatMessage(true);
+}
+?>

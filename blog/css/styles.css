@@ -315,6 +315,13 @@ small>p {
         -webkit-animation-timing-function:ease-in;
     }
 
+    .alert-float {
+        position: fixed;
+        bottom: 0;
+        width: 100%;
+        z-index: 100;
+    }
+
     @keyframes fadein {
         from { opacity: 0; }
         to   { opacity: 1; }

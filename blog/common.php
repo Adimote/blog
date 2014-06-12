@@ -8,17 +8,24 @@
 			$this->message = $Message;
 		}
 		//Places an error message in the page
-		public function formatMessage() {
+		public function formatMessage($float) {
 			if ($this->type == "") {
 				return;
+			}
+			$class = "";
+			if ($float) {
+				$class .= "alert-float ";
 			}
 
 			if ($this->type == "success") {
 				$typeMess = 'Success!';
-				$class = 'alert-success';
-			} else {
+				$class = $class.'alert-success';
+			} elseif ($this->type == "error") {
 				$typeMess = 'Error!';
-				$class = 'alert-danger';
+				$class = $class.'alert-danger';
+			} else {
+				$typeMess = 'Warning!';
+				$class = $class.'alert-danger';
 			}
 
 			$html = <<<"HTML"
