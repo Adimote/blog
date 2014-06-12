@@ -100,6 +100,16 @@ if (isset($mess)) {
 	echo renderPostList($posts);
 }
 
+if ($page == 1 && !$nextDisabled) {
+	$infinite = <<<HTML
+<a id="toggleInfinite" class="full-btn nav">
+	Click here to enable infinite scroll
+</a>
+HTML;
+} else {
+	$infinite = "";
+}
+
 //Navigation bar
 echo <<<"HTML"
 <div id="pagenav" class="nav">
@@ -109,9 +119,7 @@ echo <<<"HTML"
 <a href="/tag/{$tagurl}/{$next}/" {$nextDisabled} class="btn btn-orange pull-right"><span class="glyphicon glyphicon-chevron-right"></span></a>
 <p class="text-center">Page {$page} / {$totalpages}</p>
 </div>
-<a id="toggleInfinite" class="full-btn nav">
-	Click here to enable infinite scroll
-</a>
+{$infinite}
 </div>
 <p class="text-center hidden" id="infiniLoading"><b>Loading...</b></p>
 HTML;

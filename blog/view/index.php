@@ -93,7 +93,7 @@ if (isset($mess)) {
 	echo renderPostList($posts);
 }
 
-if ($page == 1) {
+if ($page == 1 && !$nextDisabled) {
 	$infinite = <<<"HTML"
 <a id="toggleInfinite" class="full-btn bottom-nav">
 	Click here to enable infinite scroll
