@@ -9,12 +9,14 @@ RewriteBase /
 #--------------- www to not ----------------------
 
 RewriteCond %{HTTPS} off
+RewriteCond %{REQUEST_URI} !www\.
 RewriteCond %{HTTP_HOST} ^(.*)$ [NC]
-RewriteRule ^(?!www\.)(.*)$ http://www\.%1/$1 [R=301,L]
+RewriteRule ^(.*)$ http://www\.%1/$1 [R=301,L]
 
 RewriteCond %{HTTPS} on
+RewriteCond %{REQUEST_URI} !www\.
 RewriteCond %{HTTP_HOST} ^(.*)$ [NC]
-RewriteRule ^(?!www\.)(.*)$ https://www\.%1/$1 [R=301,L]
+RewriteRule ^(.*)$ https://www\.%1/$1 [R=301,L]
 
 #--------------- Secure Rewrite ----------------------
 
