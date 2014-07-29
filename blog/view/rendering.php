@@ -30,7 +30,6 @@ HTML;
 	return $result;
 }
 
-
 //Render a post, $is_preview is true if you just want to show the flavour text
 function renderPost($post,$is_preview=false,$animate=0) {
 	$urlname = $post['urlname'];

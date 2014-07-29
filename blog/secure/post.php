@@ -212,7 +212,7 @@ HTML;
 function i(id) {return document.getElementById(id);}
 var htmlPreview = i('html-preview');
 function preview() {
-	htmlPreview.innerHTML = content.getValue().replace(/<pre><code.*?>\\n/,"<pre><code>");
+	htmlPreview.innerHTML = content.getValue().replace(/<pre><code(.*?)>\\n/,"<pre><code$1>");
 	//update mathJax
 	MathJax.Hub.Queue(["Typeset",MathJax.Hub,htmlPreview]);
 	//update highlight.js
@@ -276,8 +276,7 @@ window.onload = function() {
 	//When the content is submitted, copy all of the text in the main box to a hidden input
 	i("post-form").onsubmit = function() {
 		preview();
-		//todo fix this
-		i("content-inserter").value = content.getValue().replace(/<pre><code.*?>\\n/,"<pre><code>");
+		i("content-inserter").value = content.getValue().replace(/<pre><code(.*?)>\\n/,"<pre><code$1>");
 	};
 };
 </script>
