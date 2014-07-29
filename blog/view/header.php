@@ -16,26 +16,11 @@ if (isset($_GET['admin'])) {
 ?>
 <!DOCTYPE html>
 <meta charset='utf-8'>
+<link rel="alternate" type="application/atom+xml" title="Atom 1.0" href="/feed.atom">
 <link type="text/css" rel="stylesheet" href="/css/bootstrap.min.css" />
 <link type="text/css" rel="stylesheet" href="/css/styles.css" />
 <link type="text/css" rel="stylesheet" href="/js/highlight/styles/monokai_sublime.css" />
-<!-- Script -->
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-	extensions: ["tex2jax.js"],
-	jax: ["input/TeX", "output/SVG"],
-tex2jax: {
-	inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-	displayMath: [ ["\\[","\\]"] ],
-	processEscapes: true
-},
-TeX: {
-	extensions: ["AMSmath.js", "AMSsymbols.js"]
-},
-"HTML-CSS": { availableFonts: ["TeX"] }
-});
-</script>
-<script async src="/js/MathJax/MathJax.js"></script>
+<script async src="/js/MathJax/MathJax.js?config=TeX-AMS-MML_SVG"></script>
 <script async src="/js/script.js"></script>
 <script async src="/js/highlight/highlight.pack.js" onload="hljs.initHighlightingOnLoad();"></script>
 <!-- End Script -->
