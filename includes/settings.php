@@ -14,7 +14,7 @@
 		//Items per page on the homepage
 		const Home_PerPage = 5;
 		//URL of website, used for canonical urls
-		const URL = "http://localhost";
+		const URL = "http://www.commentitout.com";
 
 		//Feed settings
 
